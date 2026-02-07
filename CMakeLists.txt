@@ -4,6 +4,7 @@ project(GLF)
 # C++ standard
 set(CMAKE_CXX_STANDARD 20) #c++ version
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE WIN32_EXECUTABLE ON)
 
 #GLFW
 include(FetchContent)
@@ -21,15 +22,21 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE) #static linked
 
 FetchContent_MakeAvailable(glfw)
 
-# project
+
+# /////////////// main project
 add_executable(GLF 
     GLF/main.cpp
 )
-
 target_include_directories(${PROJECT_NAME} PUBLIC GLF)
 
-# link GLFW
-target_link_libraries(GLF PRIVATE glfw)
+# //////////////// GLAD
+add_library(glad STATIC
+    dep/GLAD/glad.c
+)
+target_include_directories(glad PUBLIC dep/GLAD/include)
+
+# /////////////// Link
+target_link_libraries(GLF PRIVATE glfw glad)
 
 # Windows
 if(WIN32)
