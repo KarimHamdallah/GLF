@@ -1,7 +1,7 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
+#include <GL/GLshader.h>
 
 int main()
 {
@@ -16,6 +16,13 @@ int main()
 	glfwMakeContextCurrent(window);
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+	// create triangle shader
+	GLshader SimpleTriangleShader;
+	SimpleTriangleShader.Create(
+		ASSETS_DIR "simple_triangle.vert",
+		ASSETS_DIR "simple_triangle.frag"
+	);
 
 	while (!glfwWindowShouldClose(window))
 	{

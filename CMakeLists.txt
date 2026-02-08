@@ -1,10 +1,28 @@
 cmake_minimum_required(VERSION 3.15)
+
+# add c++ runtime lib statically to .exe file
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+# ///////// GLF Project
 project(GLF)
 
-# C++ standard
 set(CMAKE_CXX_STANDARD 20) #c++ version
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE WIN32_EXECUTABLE ON)
+set(CMAKE_WIN32_EXECUTABLE ON)
+
+file(GLOB_RECURSE GLF_SOURCE_FILES "GLF/*.cpp" "GLF/*.h")
+
+add_executable(GLF ${GLF_SOURCE_FILES})
+
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/GLF" 
+             PREFIX "" 
+             FILES ${GLF_SOURCE_FILES})
+
+target_include_directories(GLF PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/GLF)
+
+# Macros
+target_compile_definitions(GLF PUBLIC ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
+# target_compile_definitions(GLF PUBLIC ASSETS_DIR = ./assets/)
 
 #GLFW
 include(FetchContent)
@@ -21,13 +39,6 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE) #static linked
 
 FetchContent_MakeAvailable(glfw)
-
-
-# /////////////// main project
-add_executable(GLF 
-    GLF/main.cpp
-)
-target_include_directories(${PROJECT_NAME} PUBLIC GLF)
 
 # //////////////// GLAD
 add_library(glad STATIC
