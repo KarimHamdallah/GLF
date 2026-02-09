@@ -5,12 +5,20 @@
 #include <GL/GLvertexarray.h>
 #include <GL/GLtexture.h>
 #include <GL/Transform.h>
+#include <Core/Input.h>
+#include <GL/Camera3D.h>
 
 uint32_t Window_Width = 800;
 uint32_t Window_Height = 600;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+float LastMouseX, LastMouseY = 0;
+bool FirstMouse = true;
+
 
 int main()
 {
@@ -25,6 +33,10 @@ int main()
 	glfwMakeContextCurrent(window);
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+	Input::Init(window);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	// create triangle shader
 	GLshader SpriteShader;
@@ -67,7 +79,10 @@ int main()
 	GLtexture texture;
 	texture.Create(ASSETS_DIR "Sprite2D/glf.png");
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)Window_Width / (float)Window_Height, 0.1f, 100.0f);
+	Camera3D Camera;
+	Camera.Init({ 0.0f, 0.0f, 3.0f });
+	
+	glm::mat4 proj = glm::perspective(glm::radians(Camera.GetFov()), (float)Window_Width / (float)Window_Height, Camera.GetNearPlane(), Camera.GetFarPlane());
 
 	TransformComponent transform;
 	transform.m_Position.z = -5.0f;
@@ -81,7 +96,12 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
+		Input::ResetInput();
+
 		glfwPollEvents();
+
+
+		Camera.Update(deltaTime);
 
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -91,7 +111,7 @@ int main()
 
 		SpriteShader.Bind();
 		SpriteShader.SetInt("Texture0", 0);
-		SpriteShader.SetMat4("proj", proj);
+		SpriteShader.SetMat4("view_proj", proj * Camera.GetViewMatrix());
 		SpriteShader.SetMat4("model", transform.GetTransformationMatrix());
 
 		texture.Bind();
@@ -102,4 +122,32 @@ int main()
 	}
 
 	return 0;
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	// Mouse Pos
+	Input::SetMousePosition({ (float)xpos, (float)ypos });
+
+	// Mouse Offset
+	if (FirstMouse)
+	{
+		LastMouseX = xpos;
+		LastMouseY = ypos;
+		FirstMouse = false;
+	}
+
+	float xoffset = xpos - LastMouseX;
+	float yoffset = LastMouseY - ypos; // „⁄ﬂÊ”… ·√‰ ≈Õœ«ÀÌ«  Y  »œ√ „‰ «·√⁄·Ï ··√”›·
+
+	Input::SetMouseOffset({ xoffset, yoffset });
+
+	LastMouseX = xpos;
+	LastMouseY = ypos;
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	// Mouse Scroll
+	Input::SetMouseScroll({ (float)xoffset, (float)yoffset });
 }
