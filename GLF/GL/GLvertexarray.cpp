@@ -30,6 +30,11 @@ void GLvertexarray::AddVertexBuffer(const GLvertexbuffer& vertexbuffer, uint32_t
 	glVertexArrayVertexBuffer(m_Id, bindingindex, vertexbuffer.GetBufferId(), 0, stride);
 }
 
+void GLvertexarray::AddIndexBuffer(const GLindexbuffer& indexbuffer)
+{
+	glVertexArrayElementBuffer(m_Id, indexbuffer.GetBufferId());
+}
+
 void GLvertexarray::PushAttrib(uint32_t shaderlocation, int count, ShaderAttribDataType type, uint32_t bindingindex)
 {
 	glVertexArrayAttribFormat(m_Id, shaderlocation, count, ShaderAttribDataTypeToGL(type), GL_FALSE, m_OffsetAccumlator * sizeof(float));

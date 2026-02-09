@@ -1,6 +1,8 @@
 #pragma once
 #include <stdint.h>
 #include <filesystem>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class GLshader
 {
@@ -11,9 +13,14 @@ public:
 
 	uint32_t GetShaderId() const { return m_Id; }
 	void Bind();
+
+
+	void SetInt(const std::string& name, int value);
+	void SetMat4(const std::string& name, const glm::mat4& mat);
 private:
 	std::pair<uint32_t, uint32_t> CompileShaders(const std::string& vertexshadersrc, const std::string& fragmentshadersrc);
 	void LinkShaders(uint32_t vertex, uint32_t fragment);
 private:
 	uint32_t m_Id = 0;
+	std::string m_ShaderName;
 };

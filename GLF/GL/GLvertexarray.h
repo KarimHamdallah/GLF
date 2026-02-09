@@ -1,5 +1,6 @@
 #pragma once
 #include "GLvertexbuffer.h"
+#include "GLindexbuffer.h"
 
 enum ShaderAttribDataType { FLOAT, INT };
 
@@ -11,6 +12,7 @@ public:
 
 	void Create();
 	void AddVertexBuffer(const GLvertexbuffer& vertexbuffer, uint32_t bindingindex, uint32_t stride);
+	void AddIndexBuffer(const GLindexbuffer& indexbuffer);
 	void PushAttrib(uint32_t shaderlocation, int count, ShaderAttribDataType type, uint32_t bindingindex);
 
 	void Bind() const;

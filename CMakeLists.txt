@@ -35,8 +35,11 @@ add_subdirectory(dep/GLFW)
 # GLAD
 add_subdirectory(dep/GLAD)
 
+#GLM
+add_subdirectory(dep/GLM)
+
 # Link
-target_link_libraries(GLF PRIVATE glfw glad)
+target_link_libraries(GLF PRIVATE glfw glad glm::glm)
 
 # Windows
 if(WIN32)

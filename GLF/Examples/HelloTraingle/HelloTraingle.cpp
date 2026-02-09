@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -21,8 +22,8 @@ int main()
 	// create triangle shader
 	GLshader SimpleTriangleShader;
 	SimpleTriangleShader.Create(
-		ASSETS_DIR "simple_triangle.vert",
-		ASSETS_DIR "simple_triangle.frag"
+		ASSETS_DIR "HelloTriangle/triangle.vert",
+		ASSETS_DIR "HelloTriangle/triangle.frag"
 	);
 
 
@@ -64,3 +65,4 @@ int main()
 
 	return 0;
 }
+*/

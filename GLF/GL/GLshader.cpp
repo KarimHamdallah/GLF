@@ -4,6 +4,8 @@
 
 bool GLshader::Create(const std::filesystem::path& vertexshaderpath, const std::filesystem::path& fragmentshaderpath)
 {
+    m_ShaderName = fragmentshaderpath.filename().string();
+
 	std::string VertexShaderSrc = ReadFileToString(vertexshaderpath);
 	std::string FragmentShaderSrc = ReadFileToString(fragmentshaderpath);
 
@@ -24,6 +26,28 @@ GLshader::~GLshader()
 void GLshader::Bind()
 {
     glUseProgram(m_Id);
+}
+
+void GLshader::SetInt(const std::string& name, int value)
+{
+    int location = glGetUniformLocation(m_Id, name.c_str());
+    if (location != -1)
+        glUniform1i(location, value);
+    else
+        std::cerr << "Error: uniform '" << name << "' not found in shader >> " << m_ShaderName << "\n";
+}
+
+void GLshader::SetMat4(const std::string& name, const glm::mat4& mat)
+{
+    int location = glGetUniformLocation(m_Id, name.c_str());
+    if (location != -1)
+    {
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+    }
+    else
+    {
+        std::cerr << "Error: uniform '" << name << "' not found in shader >> " << m_ShaderName << "\n";
+    }
 }
 
 std::pair<uint32_t, uint32_t> GLshader::CompileShaders(const std::string& vertexshadersrc, const std::string& fragmentshadersrc)
