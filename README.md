@@ -1,6 +1,6 @@
 # GLF
 
-![GLF Logo](docs/glf.png)
+![GLF Logo](githubcontent/glf.png)
 
 Graphics Framework For Testing And Learning Computer Graphics Programming
 
@@ -17,7 +17,7 @@ GLF is a simple, modern OpenGL framework designed for learning computer graphics
 ## Quick Start
 ```bash
 # Clone and build
-git clone https://github.com/YourUsername/GLF.git
+git clone https://github.com/KarimHamdallah/GLF.git
 cd GLF && mkdir build && cd build
 cmake .. && cmake --build .
 
@@ -29,7 +29,7 @@ cmake .. && cmake --build .
 
 ### Hello Triangle
 
-![Hello Triangle](docs/examples/glf_hello_triangle.png)
+![Hello Triangle](githubcontent/glf hello triangle.png)
 
 Basic rendering with vertex colors
 
@@ -64,61 +64,12 @@ vertexarray.PushAttrib(1, 4, ShaderAttribDataType::FLOAT, 0);
 SimpleTriangleShader.Bind();
 vertexarray.Bind();
 glDrawArrays(GL_TRIANGLES, 0, 3);
-```
 
-**Shaders:**
+// glsl
 
-Vertex Shader:
-```glsl
 #version 460 core
-
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec4 aColor;
-
-out vec4 vertexColor;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    vertexColor = aColor;
-}
 ```
-
-Fragment Shader:
-```glsl
-#version 460 core
-
-in vec4 vertexColor;
-out vec4 FragColor;
-
-void main()
-{
-    FragColor = vertexColor;
-}
-```
-
-## Framework API
-
-### GLshader
-```cpp
-void Create(const char* vertPath, const char* fragPath);
-void Bind();
-```
-
-### GLvertexarray
-```cpp
-void Create();
-void Bind();
-void AddVertexBuffer(GLvertexbuffer& buffer, uint32_t index, uint32_t stride);
-void PushAttrib(uint32_t index, uint32_t count, ShaderAttribDataType type, uint32_t offset);
-```
-
-### GLvertexbuffer
-```cpp
-void Create(const void* data, size_t size);
-void Bind();
-```
-
----
 
 **Made with ❤️ for learning graphics programming**
