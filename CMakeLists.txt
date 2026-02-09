@@ -24,29 +24,18 @@ target_include_directories(GLF PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/GLF)
 target_compile_definitions(GLF PUBLIC ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
 # target_compile_definitions(GLF PUBLIC ASSETS_DIR = ./assets/)
 
-#GLFW
-include(FetchContent)
-FetchContent_Declare(
-    glfw
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG 3.4
-)
-
-# GLFW - Static linking
+# GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE) #static linked
 
-FetchContent_MakeAvailable(glfw)
+add_subdirectory(dep/GLFW)
 
-# //////////////// GLAD
-add_library(glad STATIC
-    dep/GLAD/glad.c
-)
-target_include_directories(glad PUBLIC dep/GLAD/include)
+# GLAD
+add_subdirectory(dep/GLAD)
 
-# /////////////// Link
+# Link
 target_link_libraries(GLF PRIVATE glfw glad)
 
 # Windows
