@@ -29,7 +29,7 @@ cmake .. && cmake --build .
 
 ### Hello Triangle
 
-![Hello Triangle](githubcontent/glf hello triangle.png)
+![Hello Triangle](githubcontent/glf_hello_triangle.png)
 
 Basic rendering with vertex colors
 
