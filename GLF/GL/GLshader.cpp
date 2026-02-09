@@ -39,8 +39,8 @@ std::pair<uint32_t, uint32_t> GLshader::CompileShaders(const std::string& vertex
 
     // Check Vertex Shader Compilation Errors
     {
-        GLint success;
-        GLchar infoLog[1024];
+        GLint success = 0;
+        GLchar infoLog[1024] = {};
         glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
         if (!success)
         {
@@ -56,8 +56,8 @@ std::pair<uint32_t, uint32_t> GLshader::CompileShaders(const std::string& vertex
 
     // Check Fragment Shader Compilation Errors
     {
-        GLint success;
-        GLchar infoLog[1024];
+        GLint success = 0;
+        GLchar infoLog[1024] = {};
         glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
         if (!success)
         {
@@ -78,12 +78,12 @@ void GLshader::LinkShaders(uint32_t vertex, uint32_t fragment)
 
     // Check Shader Program Linking Errors
     {
-        GLint success;
-        GLchar infoLog[1024];
-        glGetShaderiv(fragment, GL_LINK_STATUS, &success);
+        GLint success = 0;
+        GLchar infoLog[1024] = {};
+        glGetProgramiv(m_Id, GL_LINK_STATUS, &success);
         if (!success)
         {
-            glGetProgramInfoLog(fragment, 1024, NULL, infoLog);
+            glGetProgramInfoLog(m_Id, 1024, NULL, infoLog);
             std::cout << "ERROR::SHADER_PROGRAM_LINKING_ERROR:\n" << infoLog << "\n-- -------------------------------------------------- - -- \n";
         }
     }
