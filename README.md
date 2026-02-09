@@ -28,9 +28,10 @@ cmake .. && cmake --build .
 ## Examples
 
 ### Hello Triangle
+![Hello Triangle](githubcontent/glf_hello_triangle.png)
 
-![Hello Triangle Example](githubcontent/glf_hello_triangle.png)
-![Sprite 2D Example](githubcontent/sprite.gif)
+### Sprite 2D
+![Sprite 2D](githubcontent/sprite.gif)
 
 
 **Made with ❤️ for learning graphics programming**
