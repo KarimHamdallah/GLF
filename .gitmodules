@@ -4,3 +4,6 @@
 [submodule "dep/GLM"]
 	path = dep/GLM
 	url = https://github.com/g-truc/glm.git
+[submodule "dep/ASSIMP"]
+	path = dep/ASSIMP
+	url = https://github.com/assimp/assimp.git

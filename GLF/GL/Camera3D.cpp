@@ -36,7 +36,7 @@ void Camera3D::Init(const glm::vec3& position)
 void Camera3D::Update(float dt)
 {
 	// rotation
-	if (Input::IsKeyPressed(KeyCode::LeftControl))
+	if (Input::IsKeyPressed(KeyCode::LeftShift))
 	{
 		auto MouseOffset = Input::GetMouseOffset();
 

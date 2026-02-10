@@ -1,0 +1,11 @@
+Model Information:
+* title:	CHEVY_15_GLTF_OUT
+* source:	https://sketchfab.com/3d-models/chevy-15-gltf-out-4594516b17d842f4bb10f88c960a5d8f
+* author:	Jac_Pretorius (https://sketchfab.com/Jac_Pretorius)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "CHEVY_15_GLTF_OUT" (https://sketchfab.com/3d-models/chevy-15-gltf-out-4594516b17d842f4bb10f88c960a5d8f) by Jac_Pretorius (https://sketchfab.com/Jac_Pretorius) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
