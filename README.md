@@ -28,7 +28,6 @@ cmake .. && cmake --build .
 ## Examples
 
 ### Hello Triangle
-- Basic Triangle rendering with per vertex color
 ![Hello Triangle](githubcontent/glf_hello_triangle.png)
 
 ### Sprite 2D
