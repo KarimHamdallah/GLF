@@ -27,10 +27,12 @@ cmake .. && cmake --build .
 
 ## Examples
 
-### Hello Triangle (Basic Triangle rendering with per vertex color)
+### Hello Triangle
+- Basic Triangle rendering with per vertex color
 ![Hello Triangle](githubcontent/glf_hello_triangle.png)
 
-### Sprite 2D (rotating in 3D world with 3D camera navigation)
+### Sprite 2D
+- rotating sprite 2D in 3D world with 3D camera navigation
 ![Sprite 2D](githubcontent/sprite.png)
 
 ### 3D Model Loading
