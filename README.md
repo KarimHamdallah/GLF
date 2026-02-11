@@ -37,6 +37,8 @@ cmake .. && cmake --build .
 ### 3D Model Loading
 - Packs all meshes into a single vertex/index buffer to avoid per-mesh VAO binding overhead
 - Uses Multi-Draw Indirect (MDI) to submit all draw commands in a single draw call
+- Use Bindless Texture And Pass Them As ShaderStorageBuffer, And Using BaseInstance variable to hold TextureIndex For Each Mesh
 ![3D Model](githubcontent/3d_model_loading.png)
+![3D Model](githubcontent/3d_model_loading2.png)
 
 **Made with ❤️ for learning graphics programming**

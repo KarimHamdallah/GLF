@@ -6,6 +6,7 @@ layout (location = 2) in vec2 aTexCoords;
 
 out vec3 vNormals;
 out vec2 vTexCoords;
+flat out int vTextureIndex;
 
 uniform mat4 view_proj;
 uniform mat4 model;
@@ -15,4 +16,5 @@ void main()
     gl_Position = view_proj * model * vec4(aPos.xyz, 1.0);
     vNormals = aNormals;
     vTexCoords = aTexCoords;
+    vTextureIndex = gl_BaseInstance;
 }

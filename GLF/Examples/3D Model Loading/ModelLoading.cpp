@@ -35,6 +35,8 @@ int main()
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
+	glEnable(GL_DEPTH_TEST);
+
 	Input::Init(window);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
@@ -47,7 +49,7 @@ int main()
 	);
 
 	GLmodel model;
-	model.Load(ASSETS_DIR "3D Model Loading/car/scene.gltf");
+	model.Load(ASSETS_DIR "3D Model Loading/car/scene.gltf", 0.01f);
 
 	Camera3D Camera;
 	Camera.Init({ 0.0f, 0.0f, 3.0f });
@@ -75,7 +77,7 @@ int main()
 
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//transform.m_Rotation.y += 3.0f * deltaTime;
 

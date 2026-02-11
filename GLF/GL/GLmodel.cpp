@@ -18,13 +18,12 @@ namespace
     }
 }
 
-void GLmodel::Load(const std::filesystem::path& path)
+void GLmodel::Load(const std::filesystem::path& path, float scale)
 {
     Assimp::Importer importer;
 
     auto flags = 
         aiProcess_Triangulate |
-        aiProcess_FlipUVs |
         aiProcess_GenNormals;
 
     const aiScene* scene = importer.ReadFile(path.string(), flags);
@@ -36,6 +35,7 @@ void GLmodel::Load(const std::filesystem::path& path)
     }
     
     m_Path = path;
+    m_Scale = scale;
 
     std::vector<Vertex> allVertices;
     std::vector<uint32_t> allIndices;
@@ -55,6 +55,14 @@ void GLmodel::Load(const std::filesystem::path& path)
     m_VAO.PushAttrib(1, 3, ShaderAttribDataType::FLOAT, 0);
     m_VAO.PushAttrib(2, 2, ShaderAttribDataType::FLOAT, 0);
 
+    // upload textures buffer
+    std::vector<GLuint64> handles;
+    for (auto& tex : m_Textures)
+        handles.push_back(tex.GetBindlessHandle());
+
+    glCreateBuffers(1, &m_TextureBufferID);
+    glNamedBufferData(m_TextureBufferID, handles.size() * sizeof(GLuint64), handles.data(), GL_STATIC_DRAW);
+
     // upload command buffer
     std::vector<DrawCommand> commands;
     for (auto& mesh : m_Meshes)
@@ -64,7 +72,7 @@ void GLmodel::Load(const std::filesystem::path& path)
         cmd.instanceCount = 1;
         cmd.indexOffset = mesh.indexOffset;
         cmd.baseVertex = mesh.baseVertex;
-        cmd.baseInstance = 0;
+        cmd.baseInstance = mesh.AlbedoTextureIndex;
         commands.push_back(cmd);
     }
 
@@ -75,11 +83,13 @@ void GLmodel::Load(const std::filesystem::path& path)
 void GLmodel::Draw()
 {
     m_VAO.Bind();
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
     /*
     for (auto& mesh : m_Meshes)
     {
+        if (mesh.AlbedoTextureIndex >= 0)
+            m_Textures[mesh.AlbedoTextureIndex].Bind();
+
         glDrawElementsBaseVertex(
             GL_TRIANGLES,
             mesh.indexCount,
@@ -91,6 +101,7 @@ void GLmodel::Draw()
     */
 
     glBindBuffer(GL_DRAW_INDIRECT_BUFFER, m_CommandBufferID);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, m_TextureBufferID);
     glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, nullptr, m_Meshes.size(), 0);
 }
 
@@ -120,7 +131,7 @@ void GLmodel::processNode(aiNode* node, const aiScene* scene, glm::mat4 parentTr
                 aiMesh->mVertices[v].z,
                 1.0f
             );
-            vertex.Position = glm::vec3(pos);
+            vertex.Position = glm::vec3(pos) * m_Scale;
 
             if (aiMesh->HasNormals()) {
                 vertex.Normal = glm::normalize(normalMatrix * glm::vec3(
@@ -150,9 +161,36 @@ void GLmodel::processNode(aiNode* node, const aiScene* scene, glm::mat4 parentTr
         }
 
         entry.indexCount = (uint32_t)allIndices.size() - entry.indexOffset;
+
+        // Get Material
+        aiMaterial* material = scene->mMaterials[aiMesh->mMaterialIndex];
+        // Load Albedo Texture
+        aiString texPath;
+        if (material->GetTexture(aiTextureType_BASE_COLOR, 0, &texPath) == AI_SUCCESS)
+        {
+            std::filesystem::path fullPath = m_Path.parent_path() / texPath.C_Str();
+            entry.AlbedoTextureIndex = LoadTextureIfIsntLoaded(fullPath.string());
+        }
+
         m_Meshes.push_back(entry);
     }
 
     for (uint32_t i = 0; i < node->mNumChildren; i++)
         processNode(node->mChildren[i], scene, globalTransform, allVertices, allIndices);
+}
+
+int GLmodel::LoadTextureIfIsntLoaded(const std::string& path)
+{
+    auto it = m_TextureCache.find(path);
+    if (it != m_TextureCache.end())
+        return it->second;
+
+    GLtexture tex;
+    if (!tex.Create(path))
+        return -1;
+
+    uint32_t index = (uint32_t)m_Textures.size();
+    m_Textures.push_back(std::move(tex));
+    m_TextureCache[path] = index;
+    return (int)index;
 }

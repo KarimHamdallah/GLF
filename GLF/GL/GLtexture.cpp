@@ -7,11 +7,24 @@
 
 GLtexture::~GLtexture()
 {
+    if (m_BindlessHandle)
+    {
+        glMakeTextureHandleNonResidentARB(m_BindlessHandle);
+    }
 	if (m_Id)
 	{
         glDeleteTextures(1, &m_Id);
 	}
 }
+
+GLtexture::GLtexture(GLtexture&& other) noexcept
+{
+    m_BindlessHandle = other.m_BindlessHandle;
+    m_Id = other.m_Id;
+    other.m_Id = 0;
+    other.m_BindlessHandle = 0;
+}
+
 
 bool GLtexture::Create(const std::filesystem::path& texturepath)
 {
@@ -59,6 +72,10 @@ bool GLtexture::Create(const std::filesystem::path& texturepath)
     glTextureParameteri(m_Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     glGenerateTextureMipmap(m_Id);
+
+    // Bindless Handle
+    m_BindlessHandle = glGetTextureHandleARB(m_Id);
+    glMakeTextureHandleResidentARB(m_BindlessHandle);
 
     stbi_image_free(data);
 
