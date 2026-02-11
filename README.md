@@ -42,6 +42,6 @@ cmake .. && cmake --build .
 ![3D Model](githubcontent/3d_model_loading2.png)
 
 ### Hdri map Asset Converter (To Cubemap Faces)
-![HDR Asset Converter](githubcontent/hdr_asset_converter.mp4)
+https://github.com/user-attachments/assets/93e3da43-145d-4710-baa7-11b66b30a943
 
 **Made with ❤️ for learning graphics programming**
