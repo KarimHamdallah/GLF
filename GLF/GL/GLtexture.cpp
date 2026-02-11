@@ -29,7 +29,6 @@ GLtexture::GLtexture(GLtexture&& other) noexcept
 bool GLtexture::Create(const std::filesystem::path& texturepath)
 {
     int width, height, channels;
-    stbi_set_flip_vertically_on_load(true); // Flip texture vertically if needed
     unsigned char* data = stbi_load(texturepath.string().c_str(), &width, &height, &channels, 0);
 
     if (!data)
@@ -79,6 +78,41 @@ bool GLtexture::Create(const std::filesystem::path& texturepath)
 
     stbi_image_free(data);
 
+    return true;
+}
+
+bool GLtexture::CreateHDRI(const std::filesystem::path& hdripath, bool flip)
+{
+    int width, height, channels;
+    stbi_set_flip_vertically_on_load(flip);
+    float* data = stbi_loadf(hdripath.string().c_str(), &width, &height, &channels, 0);
+    if (!data)
+    {
+        std::cerr << "Failed to load HDRI: " << hdripath.string().c_str() << std::endl;
+        return false;
+    }
+
+    m_Width = width;
+    m_Height = height;
+
+    // HDRI RGB16F or RGB32F
+    GLenum internalFormat = (channels == 4) ? GL_RGBA16F : GL_RGB16F;
+    GLenum dataFormat = (channels == 4) ? GL_RGBA : GL_RGB;
+
+    glCreateTextures(GL_TEXTURE_2D, 1, &m_Id);
+    glTextureStorage2D(m_Id, 1, internalFormat, width, height);
+    glTextureSubImage2D(m_Id, 0, 0, 0, width, height, dataFormat, GL_FLOAT, data);
+
+    glTextureParameteri(m_Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(m_Id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTextureParameteri(m_Id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(m_Id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    // Bindless Handle
+    m_BindlessHandle = glGetTextureHandleARB(m_Id);
+    glMakeTextureHandleResidentARB(m_BindlessHandle);
+
+    stbi_image_free(data);
     return true;
 }
 

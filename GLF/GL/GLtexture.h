@@ -12,6 +12,7 @@ public:
 	uint64_t GetBindlessHandle() const { return m_BindlessHandle; }
 
 	bool Create(const std::filesystem::path& texturepath);
+	bool CreateHDRI(const std::filesystem::path& hdripath, bool flip = false);
 	void Bind(uint32_t bindingpoint = 0) const;
 private:
 	uint32_t m_Id = 0;

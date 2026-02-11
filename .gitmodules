@@ -7,3 +7,6 @@
 [submodule "dep/ASSIMP"]
 	path = dep/ASSIMP
 	url = https://github.com/assimp/assimp.git
+[submodule "dep/IMGUI"]
+	path = dep/IMGUI
+	url = https://github.com/ocornut/imgui.git

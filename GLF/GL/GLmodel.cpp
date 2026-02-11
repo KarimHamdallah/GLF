@@ -22,8 +22,9 @@ void GLmodel::Load(const std::filesystem::path& path, float scale)
 {
     Assimp::Importer importer;
 
-    auto flags = 
+    auto flags =
         aiProcess_Triangulate |
+        aiProcess_FlipUVs |
         aiProcess_GenNormals;
 
     const aiScene* scene = importer.ReadFile(path.string(), flags);

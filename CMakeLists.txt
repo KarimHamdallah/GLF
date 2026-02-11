@@ -38,6 +38,9 @@ add_subdirectory(dep/GLAD)
 #GLM
 add_subdirectory(dep/GLM)
 
+#IMGUI
+add_subdirectory(dep/IMGUI)
+
 #assimp
 set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
 set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -59,7 +62,7 @@ set(ASSIMP_BUILD_GLTF_IMPORTER ON CACHE BOOL "" FORCE)
 add_subdirectory(dep/ASSIMP)
 
 # Link
-target_link_libraries(GLF PRIVATE glfw glad glm::glm assimp)
+target_link_libraries(GLF PRIVATE glfw glad glm::glm assimp imgui imgui_impl_glfw imgui_impl_opengl3)
 
 # Windows
 if(WIN32)

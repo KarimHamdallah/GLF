@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <GL/GLshader.h>
@@ -121,3 +121,4 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	// Mouse Scroll
 	Input::SetMouseScroll({ (float)xoffset, (float)yoffset });
 }
+*/
